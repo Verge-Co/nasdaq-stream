@@ -8,26 +8,6 @@ import (
 	"time"
 )
 
-func main() {
-	tickers := []string{"MSFT", "AAPL"}
-
-	var watcher = Watcher{
-		Tickers:  tickers,
-		Client:   http.Client{},
-		Messages: make(chan string),
-	}
-
-	for _, ticker := range tickers {
-		go watcher.watchTicker(ticker)
-	}
-
-	for {
-		msg := <-watcher.Messages
-
-		fmt.Println(msg)
-	}
-}
-
 func (w Watcher) watchTicker(ticker string) error {
 	url := fmt.Sprintf("https://api.nasdaq.com/api/quote/%s/info?assetclass=stocks", ticker)
 
