@@ -3,21 +3,30 @@ Easy and simple package to stream real-time stock prices from the NASDAQ api.
 
 ## Usage
 ```go
-tickers := []string{"MSFT", "AAPL"}
+package main
 
-var watcher = Watcher{
-    Tickers:  tickers,
-    Client:   http.Client{},
-    Messages: make(chan string),
-}
+import (
+	"fmt"
+	"net/http"
+)
 
-for _, ticker := range tickers {
-    go watcher.watchTicker(ticker)
-}
+func main() {
+	tickers := []string{"MSFT", "AAPL"}
 
-for {
-    msg := <-watcher.Messages
+	var watcher = Watcher{
+		Tickers:  tickers,
+		Client:   http.Client{},
+		Messages: make(chan string),
+	}
 
-    fmt.Println(msg)
+	for _, ticker := range tickers {
+		go watcher.watchTicker(ticker)
+	}
+
+	for {
+		msg := <-watcher.Messages
+
+		fmt.Println(msg)
+	}
 }
 ```
